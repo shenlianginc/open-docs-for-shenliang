@@ -49,6 +49,7 @@ plugins:
         - zh
         - en
       separator: '[\s\-\.，。！？；：""''()（）【】]+'
+      prebuild_index: true  # 预构建索引，提升搜索速度
   - mkdocs-video: {}  # 移除所有过时参数
   - mermaid2:
       version: 10.6.1
