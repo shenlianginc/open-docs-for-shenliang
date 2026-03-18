@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. 拉取代码
+      # 1. 拉取代码（包含Git提交记录）
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # 必须，否则git-revision-date插件无法获取提交记录
@@ -20,14 +20,14 @@ jobs:
         with:
           python-version: "3.11"
 
-      # 3. 安装依赖（含中文搜索优化的jieba）
+      # 3. 安装依赖（与本地一致）
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install mkdocs-material mkdocs-video mkdocs-mermaid2-plugin mkdocs-git-revision-date-localized-plugin jieba mkdocs-mike
+          pip install mkdocs-material mkdocs-video mkdocs-mermaid2-plugin mkdocs-git-revision-date-localized-plugin jieba mike
 
       # 4. 构建并部署到GitHub Pages
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub自动生成的Token，无需手动配置
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub自动生成，无需手动配置
