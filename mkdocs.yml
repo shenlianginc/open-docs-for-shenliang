@@ -44,29 +44,24 @@ nav:
 
 # ===================== 插件配置（极简无报错版） =====================
 plugins:
-  - search:
-      lang:
-        - zh
-        - en
-      separator: '[\s\-\.，。！？；：""''()（）【】]+'
-      prebuild_index: true  # 预构建索引，提升搜索速度
-  - mkdocs-video: {}  # 移除所有过时参数
+  - search:  # 禁用内置搜索（关键！）
+      enabled: false
+  - localsearch:  # 启用专门的中文搜索插件
+      lang: zh
+      jieba: true  # 开启 jieba 分词
+      index_every_page: true  # 索引所有页面
+  - mkdocs-video: {}
   - mermaid2:
       version: 10.6.1
-      arguments:
-        theme: base
-        themeVariables:
-          primaryColor: "#6366f1"
       javascript: https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js
   - git-revision-date-localized:
       type: date
-      format: yyyy-MM-dd  # 兼容旧版本插件
-      timezone: Asia/Shanghai
+      format: yyyy-MM-dd
       fallback_to_build_date: true
   - mike:
       alias_type: symlink
       deploy_prefix: versions
-      canonical_version: latest
+
 
 # ===================== Markdown扩展（修复slugify错误） =====================
 markdown_extensions:
