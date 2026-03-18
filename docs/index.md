@@ -17,5 +17,5 @@
     如有其他疑问，可通过页面右下角的在线客服联系我们（Chatwoot）。
 
 ## 📞 联系我们
-- 邮箱：support@your-domain.com
+- 邮箱：service@shenliang.net
 - 电话：010-86466600
