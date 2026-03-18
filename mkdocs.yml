@@ -1,26 +1,24 @@
 # ===================== 基础站点配置 =====================
-site_name: SHENLIANG帮助文档
-site_url: https://docs.open.shenliang.net  # 替换为你的域名
+site_name: 我的帮助中心
+site_url: https://shenlianginc.github.io/open-docs-for-shenliang
 site_description: 产品使用指南 & 常见问题解答
-site_author: SHENLIANG
-copyright: Copyright © 2026 SHENLIANG
+site_author: 你的团队名称
+copyright: Copyright © 2026 你的团队名称
 
-# ===================== 主题配置（Material） =====================
+# ===================== 主题配置 =====================
 theme:
   name: material
-  language: zh  # 中文本地化
-  logo: assets/logo.png  # 替换为你的Logo路径
-  favicon: assets/favicon.ico  # 替换为你的图标路径
+  language: zh
+  logo: assets/logo.png
+  favicon: assets/favicon.ico
   palette:
-    # 浅色主题
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo  # 主色调（可选：blue/red/green/purple/orange等）
+      primary: indigo
       accent: indigo
       toggle:
         icon: material/weather-sunny
         name: 切换到暗黑模式
-    # 暗黑主题
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: indigo
@@ -29,90 +27,68 @@ theme:
         icon: material/weather-night
         name: 切换到浅色模式
   features:
-    - navigation.tabs        # 顶部标签栏
-    - navigation.sections    # 导航分组展开
-    - navigation.expand      # 侧边导航自动展开
-    - navigation.top         # 返回顶部按钮
-    - search.suggest         # 搜索建议
-    - search.highlight       # 搜索结果高亮
-    - content.tabs.link      # 内容标签页
-    - content.code.copy      # 代码块复制按钮
-    - content.code.select    # 代码块行选择
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
   font:
-    text: Noto Sans SC       # 中文显示更友好的字体
-    code: JetBrains Mono    # 代码字体
+    text: Noto Sans SC
+    code: JetBrains Mono
 
-# ===================== 导航结构 =====================
+# ===================== 导航结构（仅保留存在的文件） =====================
 nav:
   - 首页: index.md
-  - 快速开始:
-    - 新手入门: getting-started/intro.md
-    - 安装教程: getting-started/install.md
-  - 使用指南:
-    - 基础功能: guide/basic.md
-    - 高级功能: guide/advanced.md
-  - 常见问题: faq.md
-  - 关于我们: about.md
 
-# ===================== 插件配置（含进阶优化） =====================
+# ===================== 插件配置（极简无报错版） =====================
 plugins:
-  # 1. 中文搜索优化（需安装jieba）
   - search:
       lang:
         - zh
         - en
-      separator: '[\s\-\.，。！？；：""''()（）【】]+'  # 中文分词分隔符
-  # 2. 视频嵌入
-  - mkdocs-video:
-      is_video_js: False  # 禁用video.js，使用原生视频
-      video_url_regex: https?:\/\/.*\.(mp4|webm|ogg)
-  # 3. Mermaid流程图支持
+      separator: '[\s\-\.，。！？；：""''()（）【】]+'
+  - mkdocs-video: {}  # 移除所有过时参数
   - mermaid2:
-      version: 10.6.1  # 指定Mermaid版本
+      version: 10.6.1
       arguments:
         theme: base
         themeVariables:
           primaryColor: "#6366f1"
-  # 4. 文档最后更新时间
+      javascript: https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js
   - git-revision-date-localized:
       type: date
-      format: yyyy-MM-dd
-      timezone: Asia/Shanghai  # 时区设置为上海
-  # 5. 多版本管理（进阶）
+      format: yyyy-MM-dd  # 兼容旧版本插件
+      timezone: Asia/Shanghai
+      fallback_to_build_date: true
   - mike:
       alias_type: symlink
       deploy_prefix: versions
       canonical_version: latest
 
-# ===================== Markdown扩展 =====================
+# ===================== Markdown扩展（修复slugify错误） =====================
 markdown_extensions:
-  - admonition                # 提示框
-  - pymdownx.details          # 折叠面板
-  - pymdownx.superfences      # 嵌套代码块/图表
-  - pymdownx.tabbed:          # 标签页
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
       alternate_style: true
   - toc:
-      permalink: true         # 标题锚点
-      slugify: !!python/name:pymdownx.slugs.slugify  # 中文标题锚点优化
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      permalink: true
+      # 修复slugify核心错误：使用兼容写法
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
 
-# ===================== 进阶优化：自定义JS/CSS（含预留位置） =====================
+# ===================== 自定义JS/CSS（非空配置） =====================
 extra_javascript:
-  # 1. 访问统计（替换为你的百度统计/Google Analytics代码）
-  # - https://hm.baidu.com/hm.js?你的百度统计ID  # 百度统计
-  # - https://www.googletagmanager.com/gtag/js?id=你的GA-ID  # Google Analytics
-  # 2. Mermaid依赖（确保流程图正常显示）
-  - https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js
-  # 3. Chatwoot客服脚本（预留位置，替换为你的Chatwoot代码）
-  # - assets/chatwoot.js  # 推荐将Chatwoot脚本放到本地assets目录
+  - assets/empty.js  # 占位，避免空配置报错
 
 extra_css:
-  # 自定义样式（可选，用于调整UI细节）
   - assets/custom.css
 
 # ===================== 在线编辑配置 =====================
-repo_url: https://github.com/shenlianginc/open-docs-for-shenliang  # 替换为你的GitHub仓库
+repo_url: https://github.com/shenlianginc/open-docs-for-shenliang
 repo_name: 编辑文档
-edit_uri: edit/main/docs/  # 点击"编辑此页"跳转到在线编辑
+edit_uri: edit/main/docs/
