@@ -1,0 +1,21 @@
+/* 优化中文显示间距 */
+.md-typeset {
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+/* 调整提示框样式 */
+.md-typeset .admonition {
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+/* 导航栏样式优化 */
+.md-header {
+  background-color: #6366f1;
+}
+
+/* 隐藏页脚默认的Powered by MkDocs（可选） */
+.md-footer__inner.md-grid {
+  display: none;
+}
