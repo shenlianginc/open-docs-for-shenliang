@@ -1,33 +1,40 @@
 name: 自动构建部署帮助中心
 on:
   push:
-    branches: [ main ]  # 监听main分支提交
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. 拉取代码（包含Git提交记录）
-      - uses: actions/checkout@v4
+      # 1. 拉取代码
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 必须，否则git-revision-date插件无法获取提交记录
+          fetch-depth: 0
 
-      # 2. 安装Python环境
+      # 2. 安装Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 3. 安装依赖（与本地一致）
+      # 3. 安装依赖
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install mkdocs-material mkdocs-video mkdocs-mermaid2-plugin mkdocs-git-revision-date-localized-plugin jieba mike
 
-      # 4. 构建并部署到GitHub Pages
+      # 4. 构建静态文件
+      - name: Build documentation
+        run: mkdocs build --site-dir ./site
+
+      # 5. 部署到GitHub Pages（官方Action，权限足够）
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub自动生成，无需手动配置
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages  # 部署到gh-pages分支
