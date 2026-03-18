@@ -1,28 +1,28 @@
-# ===================== 基础站点配置 =====================
-site_name: 我的帮助中心
+site_name: 产品帮助中心
 site_url: https://shenlianginc.github.io/open-docs-for-shenliang
-site_description: 产品使用指南 & 常见问题解答
-site_author: 你的团队名称
-copyright: Copyright © 2026 你的团队名称
+site_description: 一站式产品使用指南
+site_author: 技术团队
 
-# ===================== 主题配置 =====================
 theme:
   name: material
   language: zh
-  logo: assets/logo.png
-  favicon: assets/favicon.ico
+  # 注释掉自定义目录（避免本地缺少文件报错，如需启用请确保 docs/styles/ 存在）
+  # custom_dir: docs/styles/
+  # 注释掉自定义CSS（避免本地缺少文件报错）
+  # extra_css:
+  #   - styles/custom.css
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: indigo
-      accent: indigo
+      accent: pink
       toggle:
         icon: material/weather-sunny
-        name: 切换到暗黑模式
+        name: 切换到暗色模式
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: black
+      accent: lime
       toggle:
         icon: material/weather-night
         name: 切换到浅色模式
@@ -31,25 +31,29 @@ theme:
     - navigation.sections
     - navigation.expand
     - navigation.top
-    - search.suggest
-    - search.highlight
-    - content.code.copy
-  font:
-    text: Noto Sans SC
-    code: JetBrains Mono
+    - search.suggest       # 搜索建议（中文必备）
+    - search.highlight     # 搜索结果高亮
+    - search.share         # 搜索结果分享
+    - content.action.edit
+    - content.action.view
+    - content.tabs.link
+    - toc.follow
 
-# ===================== 导航结构（仅保留存在的文件） =====================
-nav:
-  - 首页: index.md
-
-# ===================== 插件配置（极简无报错版） =====================
+# 中文搜索核心配置（你的历史有效版本）
 plugins:
-  - search:  # 禁用内置搜索（关键！）
-      enabled: false
-  - localsearch:  # 启用专门的中文搜索插件
-      lang: zh
-      jieba: true  # 开启 jieba 分词
-      index_every_page: true  # 索引所有页面
+  - search:
+      lang: 
+        - zh
+        - en
+      # 关键：适配中文分词的分隔符（包含零宽空格）
+      separator: '[\s\u200b\-]'
+      # 启用模糊搜索，支持中间关键词匹配
+      fuzzy: true
+      # 支持2字及以上中文搜索
+      min_search_length: 2
+      # 预构建索引，强制jieba分词生效
+      prebuild_index: true
+  # 保留其他必要插件，移除冗余配置
   - mkdocs-video: {}
   - mermaid2:
       version: 10.6.1
@@ -62,29 +66,39 @@ plugins:
       alias_type: symlink
       deploy_prefix: versions
 
+nav:
+  - 首页: index.md
+  - 产品A:
+      - 产品介绍: 产品A/intro.md
+      - 快速开始: 产品A/quickstart.md
+  - 产品B:
+      - 安装部署: 产品B/install.md
+      - API文档: 产品B/api.md
+      - 功能教程: 产品B/tutorial.md
+  - 关于我们: about.md
 
-# ===================== Markdown扩展（修复slugify错误） =====================
 markdown_extensions:
   - admonition
+  - tables
+  - toc:
+      permalink: true
+      # 修复slugify报错的兼容写法
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
-  - toc:
-      permalink: true
-      # 修复slugify核心错误：使用兼容写法
-      slugify: !!python/object/apply:pymdownx.slugs.slugify
-        kwds:
-          case: lower
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
-# ===================== 自定义JS/CSS（非空配置） =====================
+# 非空配置占位（避免报错）
 extra_javascript:
-  - assets/empty.js  # 占位，避免空配置报错
+  - assets/empty.js
 
-extra_css:
-  - assets/custom.css
-
-# ===================== 在线编辑配置 =====================
+# 仓库编辑链接配置
 repo_url: https://github.com/shenlianginc/open-docs-for-shenliang
 repo_name: 编辑文档
 edit_uri: edit/main/docs/
